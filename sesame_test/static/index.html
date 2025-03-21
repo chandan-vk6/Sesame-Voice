@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SesameAI Voice Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            padding-top: 2rem;
+        }
+        .chat-window {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .chat-header {
+            background-color: #6c5ce7;
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+        }
+        .chat-body {
+            padding: 1.5rem;
+            height: 400px;
+            overflow-y: auto;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: #ff6b6b;
+        }
+        .status-indicator.connected {
+            background-color: #1dd1a1;
+        }
+        .controls {
+            background-color: #f1f2f6;
+            padding: 1rem;
+            border-top: 1px solid #dfe4ea;
+        }
+        .character-select {
+            width: 100%;
+            max-width: 240px;
+        }
+        .audio-controls button {
+            min-width: 120px;
+        }
+        .audio-visualizer {
+            height: 60px;
+            width: 100%;
+            background-color: #2d3436;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .visualizer-input, .visualizer-output {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+        }
+        .visualizer-input {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .visualizer-bar {
+            position: absolute;
+            bottom: 0;
+            background-color: #6c5ce7;
+            width: 4px;
+            border-radius: 2px 2px 0 0;
+        }
+        .visualizer-output .visualizer-bar {
+            background-color: #1dd1a1;
+        }
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: #f1f2f6;
+            font-size: 0.85rem;
+        }
+        .log-entry.system {
+            background-color: #dfe4ea;
+        }
+        .log-entry.error {
+            background-color: #ff6b6b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">SesameAI Voice Chat</h1>
+        
+        <div class="chat-window">
+            <div class="chat-header d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="status-indicator" id="status-light"></span>
+                    <span id="status-text">Disconnected</span>
+                </div>
+                <div class="character-select">
+                    <select class="form-select" id="character-select">
+                        <option value="Miles">Miles (Male)</option>
+                        <option value="Maya">Maya (Female)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="chat-body">
+                <div class="audio-visualizer">
+                    <div class="visualizer-input" id="input-visualizer"></div>
+                    <div class="visualizer-output" id="output-visualizer"></div>
+                </div>
+                
+                <div id="log-container">
+                    <div class="log-entry system">System: Welcome to SesameAI Voice Chat! Click Connect to begin.</div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-6">
+                        <div class="d-flex audio-controls">
+                            <button id="connect-btn" class="btn btn-primary me-2">Connect</button>
+                            <button id="disconnect-btn" class="btn btn-danger" disabled>Disconnect</button>
+                            <div class="spinner-border text-primary ms-2 d-none" id="connect-spinner" role="status">
+                                <span class="visually-hidden">Connecting...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="form-check form-switch d-inline-block me-3">
+                            <input class="form-check-input" type="checkbox" id="auto-disconnect">
+                            <label class="form-check-label" for="auto-disconnect">Auto-disconnect on silence</label>
+                        </div>
+                        <button id="clear-log-btn" class="btn btn-sm btn-secondary me-2">Clear Log</button>
+                        <!-- <button id="debug-btn" class="btn btn-sm btn-warning">Test Audio</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info">
+            <h5>Tips:</h5>
+            <ul>
+                <li>Use headphones to prevent echo or feedback.</li>
+                <li>Speak clearly and at a normal volume.</li>
+                <li>Wait for the AI to finish speaking before you respond.</li>
+                <li>Try asking a question to start the conversation.</li>
+                <li><strong>Important:</strong> Some browsers may block autoplay audio. If you don't hear responses, click anywhere on the page after connecting.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="static/app.js"></script>
+</body>
+</html>
